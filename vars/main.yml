@@ -1,0 +1,13 @@
+---
+# Common for all
+
+# Linux uses this value. Solaris overwrites it.
+min_gid: 1000
+
+# include managed groups here
+known_common_groups: []
+
+#
+managed_common_groups: []
+
+...

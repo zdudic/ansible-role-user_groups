@@ -1,0 +1,14 @@
+---
+- name: Backup survey
+  ansible.builtin.include_tasks: backup-survey.yml
+
+- name: Manage local group gid {{ local_group_gid }}
+  ansible.builtin.group:
+    # local: yes # using lgroupadd, not groupadd
+    name: "{{ local_group }}"
+    gid: "{{ local_group_gid }}"
+    state: present
+  # does module report change even it doesn't happen?
+  # changed_when: false
+
+...

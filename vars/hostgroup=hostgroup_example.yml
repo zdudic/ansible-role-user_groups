@@ -1,0 +1,18 @@
+---
+
+# this is example for hor group based cfg
+
+# change if required
+min_gid: 1000
+
+# this is example
+known_hostgroup_groups:
+  - ex-group1
+  - ex-group2
+
+# managed_hostgroup_groups: []
+managed_hostgroup_groups:
+  - { name: "ex-group1", gid: 2000000 }
+  - { name: "ex-group2", gid: 2000001 }
+
+...

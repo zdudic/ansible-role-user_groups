@@ -1,0 +1,9 @@
+---
+- name: Backup before remove local group {{ local_group_to_remove }}
+  ansible.builtin.include_tasks: backup_files.yml
+
+- name: Remove local group {{ local_group_to_remove }}
+  ansible.builtin.group:
+    name: "{{ local_group_to_remove }}"
+    state: absent
+...

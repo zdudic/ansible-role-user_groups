@@ -1,0 +1,13 @@
+---
+- name: Gather facts
+  ansible.builtin.setup:
+    gather_subset:
+      - 'min'
+
+- name: Remove uknown groups
+  ansible.builtin.include_tasks: remove_unknown_groups.yml
+
+- name: Manage groups
+  ansible.builtin.include_tasks: manage_groups.yml
+
+...

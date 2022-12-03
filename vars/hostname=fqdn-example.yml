@@ -1,0 +1,18 @@
+---
+
+# this is example for host based cfg
+
+# change if required
+min_gid: 1000
+
+# This is example. 
+known_host_groups:
+  - "group1"
+  - "group2"
+
+#managed_host_groups: []
+managed_host_groups:
+  - { name: "group1", gid: 1000000 }
+  - { name: "group2", gid: 1000001 }
+
+...

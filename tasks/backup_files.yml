@@ -1,0 +1,9 @@
+---
+- name: Backup /etc/group
+  ansible.builtin.copy:
+    src: /etc/group
+    dest: /etc/group_{{ ansible_date_time.date }}_{{ ansible_date_time.time }}{{ ansible_date_time.tz }}
+    backup: true
+    mode: '0644'
+    remote_src: true
+...

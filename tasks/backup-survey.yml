@@ -1,0 +1,20 @@
+---
+- name: Get local_group GID
+  ansible.builtin.shell: "getent group {{ local_group }} | awk -F: '{print $3}'"
+  changed_when: false
+  register: current_gid
+  check_mode: false
+  # use case when adding new local group
+  # failed_when: "result is failed and not '<some error>' in current_gid.stderr"
+
+- name: Survey local_group GID
+  ansible.builtin.debug:
+    msg:
+      - "Current {{ local_group }} GID: {{ current_gid.stdout }}"
+      - "Desired {{ local_group }} GID: {{ item.gid }}"
+
+- name: Backup before modify local group {{ local_group }}
+  ansible.builtin.include_tasks: backup_files.yml
+  when: ( current_gid.stdout | int ) != item.gid
+
+...

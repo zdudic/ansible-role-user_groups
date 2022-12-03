@@ -1,0 +1,17 @@
+---
+# Solaris specific variables
+# https://docs.oracle.com/cd/E23824_01/html/821-1451/userconcept-36940.html#userconcept-30
+
+# Solaris value overwrites min_gid from vars/main.yml (if any)
+min_gid: 100
+
+# Common user groups for Solaris family
+known_common_groups:
+  - nobody
+  - noaccess
+  - nogroup
+
+# Your user groups to manage for Solaris family
+managed_common_groups: []
+
+...

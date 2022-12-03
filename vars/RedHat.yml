@@ -1,0 +1,14 @@
+---
+# For reference see /etc/login.defs
+
+min_gid: 1000
+
+# Common user groups for RedHat family
+known_common_groups:
+  - nobody
+  - nfsnobody
+
+# Your user groups to manage for RedHat family
+managed_common_groups: []
+
+...

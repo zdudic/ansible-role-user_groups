@@ -1,0 +1,28 @@
+galaxy_info:
+  role_name: user_groups
+  namespace: zdudic
+  author: zarko d
+  description: Management of local user groups
+
+  license: "Public Domain"
+
+  min_ansible_version: 2.10.7
+
+  platforms:
+    - name: EL
+      versions:
+        - all
+    - name: Fedora
+      versions:
+        - all
+    - name: Solaris
+      versions:
+        - all
+
+  galaxy_tags:
+    - system
+    - linux
+    - solaris
+    - security
+
+dependencies: []

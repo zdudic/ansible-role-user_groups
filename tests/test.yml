@@ -1,0 +1,7 @@
+---
+- name: Test local user groups role
+  hosts: test
+  roles:
+    - role: ../../ansible-role-user_groups
+...
+

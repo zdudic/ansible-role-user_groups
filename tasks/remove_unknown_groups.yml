@@ -1,0 +1,67 @@
+---
+- name: Load OS specific variables
+  ansible.builtin.include_vars: "vars/{{ ansible_os_family }}.yml"
+
+- name: Create OF based known groups list
+  ansible.builtin.set_fact:
+    known_groups: "{{ known_common_groups }}"
+
+- name: Load host or host group variables
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "vars/hostname={{ inventory_hostname }}.yml"
+        - "vars/hostgroup={{ host_group }}.yml"
+      skip: true
+
+- name: Check existance of hostname variables
+  ansible.builtin.stat:
+    path: "{{ role_path }}/vars/hostname={{ inventory_hostname }}.yml"
+  register: host_vars
+  delegate_to: localhost
+
+- name: Create host based known groups list
+  ansible.builtin.set_fact:
+    known_groups: "{{ known_common_groups + known_host_groups }}"
+  when: host_vars.stat.exists
+
+- name: Check existance of host group variables
+  ansible.builtin.stat:
+    path: "{{ role_path }}/vars/hostgroup={{ host_group }}.yml"
+  register: hostgroup_vars
+  delegate_to: localhost
+
+- name: Create host group based known groups list
+  ansible.builtin.set_fact:
+    known_groups: "{{ known_common_groups + known_hostgroup_groups }}"
+  when:
+    - not host_vars.stat.exists
+    - hostgroup_vars.stat.exists
+
+- name: Show all known groups
+  ansible.builtin.debug:
+    msg: "All known groups: {{ known_groups }}"
+
+- name: Find from /etc/group groups with gid >= {{ min_gid }}
+  ansible.builtin.shell: "awk -F':' '{ if ($3 >= {{ min_gid }}) print $1 }' /etc/group"
+  changed_when: false
+  register: result
+  check_mode: false # force read-only task to run, even playbook uses --check
+
+- name: Show discovered local groups and ones to remove
+  ansible.builtin.debug:
+    msg:
+      # - "{{ result.stdout_lines | type_debug }}" # list
+      - "Discovered local groups: {{ result.stdout_lines }}"
+      - "Groups to remove: {{ result.stdout_lines | difference(known_groups) }}"
+
+- name: Remove local groups
+  ansible.builtin.include_tasks:
+    file: remove_local_group.yml
+    apply:
+      vars:
+        local_group_to_remove: "{{ item }}"
+  with_items: "{{ result.stdout_lines | difference(known_groups) }}"
+  when: "result.stdout_lines | difference(known_groups) | length > 0"
+
+...
