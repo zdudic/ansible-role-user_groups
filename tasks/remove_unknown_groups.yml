@@ -2,7 +2,7 @@
 - name: Load OS specific variables
   ansible.builtin.include_vars: "vars/{{ ansible_os_family }}.yml"
 
-- name: Create OF based known groups list
+- name: Create OS based known groups list
   ansible.builtin.set_fact:
     known_groups: "{{ known_common_groups }}"
 
